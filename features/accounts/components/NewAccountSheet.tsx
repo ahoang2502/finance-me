@@ -6,11 +6,18 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { useNewAccount } from "@/features/accounts/hooks/useNewAccount";
-import { AccountForm } from "./AccountForm";
+import { useCreateAccount } from "../api/useCreateAccount";
+import { AccountForm, FormValues } from "./AccountForm";
 
 export const NewAccountSheet = () => {
   const { isOpen, onClose } = useNewAccount();
+  const mutation = useCreateAccount();
 
+  const onSubmit = (values: FormValues) => {
+    mutation.mutate(values, {
+      onSuccess: () => onClose(),
+    });
+  };
 
   return (
     <Sheet open={isOpen} onOpenChange={onClose}>
@@ -22,7 +29,11 @@ export const NewAccountSheet = () => {
           </SheetDescription>
         </SheetHeader>
 
-        <AccountForm onSubmit={() => {}} disabled={false} />
+        <AccountForm
+          onSubmit={onSubmit}
+          disabled={mutation.isPending}
+          defaultValues={{ name: "" }}
+        />
       </SheetContent>
     </Sheet>
   );
