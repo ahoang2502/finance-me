@@ -9,11 +9,15 @@ import { useNewAccount } from "@/features/accounts/hooks/useNewAccount";
 import { columns } from "./_components/Columns";
 import { useGetAccounts } from "@/features/accounts/api/useGetAccounts";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useBulkDeleteAccounts } from "@/features/accounts/api/useBulkDelete";
 
 const AccountsPage = () => {
   const { onOpen } = useNewAccount();
   const accountsQuery = useGetAccounts();
   const accounts = accountsQuery.data || [];
+  const deleteAccounts = useBulkDeleteAccounts();
+
+  const isDisabled = accountsQuery.isLoading || deleteAccounts.isPending;
 
   if (accountsQuery.isLoading)
     return (
@@ -49,8 +53,11 @@ const AccountsPage = () => {
             columns={columns}
             data={accounts}
             filterKey="name"
-            onDelete={() => {}}
-            disabled={false}
+            onDelete={(row) => {
+              const ids = row.map((r) => r.original.id);
+              deleteAccounts.mutate({ ids });
+            }}
+            disabled={isDisabled}
           />
         </CardContent>
       </Card>
