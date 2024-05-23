@@ -25,7 +25,7 @@ import {
 } from "@/components/ui/table";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
-import { useConfirm } from "@/features/accounts/hooks/useConfirm";
+import { useConfirm } from "@/hooks/useConfirm";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
