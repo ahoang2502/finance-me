@@ -1,11 +1,9 @@
-import React from "react";
-import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Trash } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 
-import { Input } from "@/components/ui/input";
-import { insertAccountSchema } from "@/db/schema";
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -13,8 +11,8 @@ import {
   FormItem,
   FormLabel,
 } from "@/components/ui/form";
-import { Button } from "@/components/ui/button";
-import { handle } from "hono/vercel";
+import { Input } from "@/components/ui/input";
+import { insertAccountSchema } from "@/db/schema";
 
 const formSchema = insertAccountSchema.pick({
   name: true,
