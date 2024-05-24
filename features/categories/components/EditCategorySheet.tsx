@@ -7,26 +7,26 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { AccountForm, FormValues } from "./AccountForm";
+import { CategoryForm, FormValues } from "./CategoryForm";
 
-import { useEditAccount } from "../api/useEditCategory";
-import { useGetAccount } from "../api/useGetCategory";
-import { useOpenAccount } from "../hooks/useOpenCategory";
-import { useDeleteAccount } from "../api/useDeleteCategory";
+import { useEditCategory } from "../api/useEditCategory";
+import { useGetCategory } from "../api/useGetCategory";
+import { useOpenCategory } from "../hooks/useOpenCategory";
+import { useDeleteCategory } from "../api/useDeleteCategory";
 import { useConfirm } from "@/hooks/useConfirm";
 
-export const EditAccountSheet = () => {
-  const { isOpen, onClose, id } = useOpenAccount();
+export const EditCategorySheet = () => {
+  const { isOpen, onClose, id } = useOpenCategory();
   const [ConfirmDialog, confirm] = useConfirm(
     "Are you sure?",
-    "You are about to delete this transaction."
+    "You are about to delete this category."
   );
 
-  const accountsQuery = useGetAccount(id);
-  const editMutation = useEditAccount(id);
-  const deleteMutation = useDeleteAccount(id);
+  const categoriesQuery = useGetCategory(id);
+  const editMutation = useEditCategory(id);
+  const deleteMutation = useDeleteCategory(id);
 
-  const isLoading = accountsQuery.isLoading;
+  const isLoading = categoriesQuery.isLoading;
   const isPending = editMutation.isPending || deleteMutation.isPending;
 
   const onSubmit = (values: FormValues) => {
@@ -44,8 +44,8 @@ export const EditAccountSheet = () => {
       });
   };
 
-  const defaultValues = accountsQuery.data
-    ? { name: accountsQuery.data.name }
+  const defaultValues = categoriesQuery.data
+    ? { name: categoriesQuery.data.name }
     : { name: "" };
 
   return (
@@ -55,8 +55,8 @@ export const EditAccountSheet = () => {
       <Sheet open={isOpen} onOpenChange={onClose}>
         <SheetContent className="space-y-4">
           <SheetHeader>
-            <SheetTitle>Edit account</SheetTitle>
-            <SheetDescription>Edit an existing account.</SheetDescription>
+            <SheetTitle>Edit category</SheetTitle>
+            <SheetDescription>Edit an existing category.</SheetDescription>
           </SheetHeader>
 
           {isLoading ? (
@@ -64,7 +64,7 @@ export const EditAccountSheet = () => {
               <Loader2 className="size-4 text-muted-foreground animate-spin" />
             </div>
           ) : (
-            <AccountForm
+            <CategoryForm
               id={id}
               onSubmit={onSubmit}
               disabled={isPending}
