@@ -3,6 +3,7 @@ import { Trash } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import { Select } from "@/components/Select";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -11,7 +12,6 @@ import {
   FormItem,
   FormLabel,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { insertTransactionSchema } from "@/db/schema";
 
 const formSchema = z.object({
@@ -50,14 +50,16 @@ export const TransactionForm = ({
   disabled,
   accountOptions,
   categoryOptions,
+  onCreateAccount,
+  onCreateCategory,
 }: Props) => {
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues,
   });
 
-  const handleSubmit = (values: ApiFormValues) => {
-    onSubmit(values);
+  const handleSubmit = (values: FormValues) => {
+    // onSubmit(values);
   };
 
   const handleDelete = () => {
@@ -71,17 +73,41 @@ export const TransactionForm = ({
         className="space-y-4 pt-4"
       >
         <FormField
-          name="name"
+          name="accountId"
           control={form.control}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Name</FormLabel>
+              <FormLabel>Account</FormLabel>
 
               <FormControl>
-                <Input
+                <Select
+                  placeholder="Select an account"
+                  options={accountOptions}
+                  onCreate={onCreateAccount}
+                  onChange={field.onChange}
+                  value={field.value}
                   disabled={disabled}
-                  placeholder="e.g. Cash, Bank, Credit Card"
-                  {...field}
+                />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          name="categoryId"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Category</FormLabel>
+
+              <FormControl>
+                <Select
+                  placeholder="Select a category"
+                  options={categoryOptions}
+                  onCreate={onCreateCategory}
+                  onChange={field.onChange}
+                  value={field.value}
+                  disabled={disabled}
                 />
               </FormControl>
             </FormItem>
