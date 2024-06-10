@@ -7,7 +7,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { AccountForm, FormValues } from "./AccountForm";
+import { AccountForm, FormValues } from "./TransactionForm";
 
 import { useEditAccount } from "../api/useEditTransaction";
 import { useGetAccount } from "../api/useGetTransaction";
