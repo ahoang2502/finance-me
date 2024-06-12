@@ -2,14 +2,17 @@ import { TriangleAlert } from "lucide-react";
 
 import { useOpenCategory } from "@/features/categories/hooks/useOpenCategory";
 import { cn } from "@/lib/utils";
+import { useOpenTransaction } from "@/features/transactions/hooks/useOpenTransaction";
 
 type Props = { id: string; category: string | null; categoryId: string | null };
 
 export const CategoryColumn = ({ id, category, categoryId }: Props) => {
   const { onOpen: onOpenCategory } = useOpenCategory();
+  const { onOpen: onOpenTransaction } = useOpenTransaction();
 
   const onClick = () => {
     if (categoryId) onOpenCategory(categoryId);
+    else onOpenTransaction(id);
   };
 
   return (
