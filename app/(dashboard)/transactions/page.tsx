@@ -6,20 +6,22 @@ import { DataTable } from "@/components/DataTable";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useBulkDeleteAccounts } from "@/features/accounts/api/useBulkDeleteAccounts";
-import { useGetAccounts } from "@/features/accounts/api/useGetAccounts";
-import { useNewTransaction } from "@/features/transactions/hooks/useNewTransaction";
 import { columns } from "./_components/Columns";
+
+import { useBulkDeleteTransactions } from "@/features/transactions/api/useBulkDeleteTransactions";
+import { useGetTransactions } from "@/features/transactions/api/useGetTransactions";
+import { useNewTransaction } from "@/features/transactions/hooks/useNewTransaction";
 
 const TransactionsPage = () => {
   const { onOpen } = useNewTransaction();
-  const accountsQuery = useGetAccounts();
-  const accounts = accountsQuery.data || [];
-  const deleteAccounts = useBulkDeleteAccounts();
+  const transactionsQuery = useGetTransactions();
+  const transactions = transactionsQuery.data || [];
+  const deleteTransactions = useBulkDeleteTransactions();
 
-  const isDisabled = accountsQuery.isLoading || deleteAccounts.isPending;
+  const isDisabled =
+    transactionsQuery.isLoading || deleteTransactions.isPending;
 
-  if (accountsQuery.isLoading)
+  if (transactionsQuery.isLoading)
     return (
       <div className="max-w-screen-2xl mx-auto w-full pb-10 -mt-24">
         <Card className="border-none drop-shadow-sm">
@@ -53,11 +55,11 @@ const TransactionsPage = () => {
         <CardContent>
           <DataTable
             columns={columns}
-            data={accounts}
+            data={transactions}
             filterKey="name"
             onDelete={(row) => {
               const ids = row.map((r) => r.original.id);
-              deleteAccounts.mutate({ ids });
+              deleteTransactions.mutate({ ids });
             }}
             disabled={isDisabled}
           />

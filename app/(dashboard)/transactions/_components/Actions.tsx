@@ -11,20 +11,20 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 
-import { useOpenAccount } from "@/features/accounts/hooks/useOpenAccount";
-import { useDeleteAccount } from "@/features/accounts/api/useDeleteAccount";
+import { useOpenTransaction } from "@/features/transactions/hooks/useOpenTransaction";
 import { useConfirm } from "@/hooks/useConfirm";
+import { useDeleteTransaction } from "@/features/transactions/api/useDeleteTransaction";
 
 type Props = { id: string };
 
 export const Actions = ({ id }: Props) => {
-  const { onOpen } = useOpenAccount();
+  const { onOpen } = useOpenTransaction();
   const [ConfirmDialog, confirm] = useConfirm(
     "Are you sure?",
-    "You are about to delete this account."
+    "You are about to delete this transaction."
   );
 
-  const deleteMutation = useDeleteAccount(id);
+  const deleteMutation = useDeleteTransaction(id);
 
   const handleDelete = async () => {
     const ok = await confirm();
@@ -52,7 +52,7 @@ export const Actions = ({ id }: Props) => {
             <Edit className="size-4 mr-2" />
             Edit
           </DropdownMenuItem>
-          
+
           <DropdownMenuItem
             disabled={deleteMutation.isPending}
             onClick={handleDelete}
