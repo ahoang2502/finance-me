@@ -5,6 +5,7 @@ import { Loader2 } from "lucide-react";
 import { HeaderLogo } from "./HeaderLogo";
 import { Navigation } from "./Navigation";
 import { WelcomeMessage } from "./WelcomeMessage";
+import { Filters } from "./Filters";
 
 export const Header = () => {
   return (
@@ -25,6 +26,7 @@ export const Header = () => {
         </div>
 
         <WelcomeMessage />
+        <Filters />
       </div>
     </header>
   );
