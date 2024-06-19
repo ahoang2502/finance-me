@@ -29,6 +29,7 @@ export const useExchangePublicToken = () => {
     },
     onSuccess: () => {
       toast.success("Public token exchanged!");
+      queryClient.invalidateQueries({ queryKey: ["connected-bank"] });
       queryClient.invalidateQueries({ queryKey: ["summary"] });
       queryClient.invalidateQueries({ queryKey: ["transactions"] });
       queryClient.invalidateQueries({ queryKey: ["accounts"] });
