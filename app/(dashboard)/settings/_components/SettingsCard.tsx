@@ -2,19 +2,24 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { cn } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
+import { cn } from "@/lib/utils";
+import { Loader2 } from "lucide-react";
 
 import { useGetConnectedBank } from "@/features/plaid/api/useGetConnectedBank";
-import { PlaidConnect } from "../../../../features/plaid/components/PlaidConnect";
 import { PlaidDisconnect } from "@/features/plaid/components/PlaidDisconnect";
-import { Loader2 } from "lucide-react";
+import { useGetSubscription } from "@/features/subscriptions/api/useGetSubscription";
+import { SubscriptionCheckout } from "@/features/subscriptions/components/SubscriptionCheckout";
+import { PlaidConnect } from "../../../../features/plaid/components/PlaidConnect";
 
 export const SettingsCard = () => {
   const { data: connectedBank, isLoading: isConnectedBankLoading } =
     useGetConnectedBank();
 
-  if (isConnectedBankLoading)
+  const { data: subscription, isLoading: isSubscriptionLoading } =
+    useGetSubscription();
+
+  if (isConnectedBankLoading || isSubscriptionLoading)
     return (
       <Card className="border-none drop-shadow-sm">
         <CardHeader>
@@ -38,6 +43,7 @@ export const SettingsCard = () => {
       </CardHeader>
 
       <CardContent>
+        {/* Bank connect */}
         <Separator />
 
         <div className="flex flex-col gap-y-2 lg:flex-row items-center py-4">
@@ -58,6 +64,30 @@ export const SettingsCard = () => {
             </div>
 
             {connectedBank ? <PlaidDisconnect /> : <PlaidConnect />}
+          </div>
+        </div>
+
+        {/* Subscription */}
+        <Separator />
+
+        <div className="flex flex-col gap-y-2 lg:flex-row items-center py-4">
+          <p className="text-sm font-medium w-full lg:w-[16.5rem] ">
+            Subscription
+          </p>
+
+          <div className="w-full flex items-center justify-between">
+            <div
+              className={cn(
+                "text-sm truncate flex items-center",
+                !subscription && "text-muted-foreground"
+              )}
+            >
+              {subscription
+                ? `Subscription ${subscription.status}`
+                : "No active subscription"}
+            </div>
+
+            <SubscriptionCheckout />
           </div>
         </div>
       </CardContent>
